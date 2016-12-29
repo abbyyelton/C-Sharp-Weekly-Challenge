@@ -15,5 +15,6 @@ namespace CodeLou.CSharp.Week3.Challenge
 		IEnumerable<T> GetAllItems();
 		string ToJson();
 		void LoadFromJson(string json);
+        void Display();
 	}
 }
