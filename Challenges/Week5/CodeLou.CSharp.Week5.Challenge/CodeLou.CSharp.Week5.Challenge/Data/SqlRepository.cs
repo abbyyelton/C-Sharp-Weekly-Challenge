@@ -30,7 +30,7 @@ namespace CodeLou.CSharp.Week5.Challenge
         /// in that table.</para>
         /// </summary>
         /// <param name="DeleteStatement">SQL Delete Statement</param>
-        public void DeleteEmplyee(string DeleteStatement)
+        public void DeleteEmployee(string DeleteStatement)
         {
             // Connection to your SQL server, MySql, MsSql, Local MDF File
             using (SqlConnection connection = new SqlConnection(_ConnectionString))
@@ -111,19 +111,6 @@ namespace CodeLou.CSharp.Week5.Challenge
                         // First lets check to see if we have any data
                         if (dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
                         {
-                            // I used a #region tag to section off code, you can expand it by clicking the plus sign on the left.
-                            #region Fill Employee Class
-                            // If we have data, now we have to convert it into a View Model, so MVC can create our view. Since
-                            // you can make a view strongly typed (meaning you can only pass a certain view model to it) we cannot
-                            // pass the raw Table to the view.
-
-                            // We only want 1 employee, so we do not need to loop through any data, assuming we only have 1 returned result
-
-                            // new Employee
-                            // the column names are the same as our properties for ease of use
-                            // it's best to do this so you don't have to guess what property maps to what column
-
-                            // be sure to match up the datatypes from SQL. You'll have to convert INT and Dates etc.
                             DataRow row = dataSet.Tables[0].Rows[0];
                             employee.ActiveEmployee = Convert.ToBoolean(row["ActiveEmployee"]);
                             employee.DepartmentId = Convert.ToInt32(row["DepartmentId"]);
@@ -142,13 +129,7 @@ namespace CodeLou.CSharp.Week5.Challenge
                             {
                                 employee.TerminationDate = Convert.ToDateTime(row["TerminationDate"]);
                             }
-
-                            // is the table joined?, remember relational databased store additional data in other tables. If we join
-                            // our employee on the Department table and Position table then we get that information to display
-
-                            #region Bonus - Joining another table
-                            // TODO: Bonus - Joining another table. Uncomment these lines for this bonus
-                            /*if (row["DepartmentName"] != DBNull.Value)
+                            if (row["DepartmentName"] != DBNull.Value)
                             {
                                 employee.DepartmentName = row["DepartmentName"].ToString();
                             }
@@ -156,10 +137,7 @@ namespace CodeLou.CSharp.Week5.Challenge
                             if (row["PositionName"] != DBNull.Value)
                             {
                                 employee.PositionName = row["PositionName"].ToString();
-                            }*/
-                            #endregion
-
-                            #endregion
+                            }
                         }
                     }
                 }
@@ -167,6 +145,7 @@ namespace CodeLou.CSharp.Week5.Challenge
 
             return employee;
         }
+
         /// <summary>
         /// Get all Employees
         /// <para>What SQL statement can we use to get all employees in the database. This one is a bit more powerful, since it's an open where statement.
@@ -183,7 +162,7 @@ namespace CodeLou.CSharp.Week5.Challenge
             // Connection to your SQL server, MySql, MsSql, Local MDF File
             using (SqlConnection connection = new SqlConnection(_ConnectionString))
             {
-                // The SQL command you want to run on your server to get data back
+                // The SQL commancd you want to run on your server to get data back
                 using (SqlCommand command = new SqlCommand(Where, connection))
                 {
                     // The adapter that is responsible for connecting to the database and getting the data
@@ -198,13 +177,6 @@ namespace CodeLou.CSharp.Week5.Challenge
                         // First lets check to see if we have any data
                         if (dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
                         {
-                            // I used a #region tag to section off code, you can expand it by clicking the plus sign on the left.
-                            #region Fill Employee Class
-
-                            // If we have data, now we have to convert it into a View Model, so MVC can create our view. Since
-                            // you can make a view strongly typed (meaning you can only pass a certain view model to it) we cannot
-                            // pass the raw Table to the view.
-
                             // loop through all the rows
                             foreach (DataRow row in dataSet.Tables[0].Rows)
                             {
@@ -225,6 +197,8 @@ namespace CodeLou.CSharp.Week5.Challenge
                                 employee.Phone = row["Phone"].ToString();
                                 employee.PositionId = Convert.ToInt32(row["PositionId"]);
                                 employee.StartTime = row["StartTime"].ToString();
+                                employee.DepartmentName = row["DepartmentName"].ToString();
+                                employee.PositionName = row["PositionName"].ToString();
 
                                 // be sure to check for null values as well
                                 if (row["TerminationDate"] != DBNull.Value)
@@ -232,12 +206,7 @@ namespace CodeLou.CSharp.Week5.Challenge
                                     employee.TerminationDate = Convert.ToDateTime(row["TerminationDate"]);
                                 }
 
-                                #region Bonus - Joining another table
-                                // is the table joined?, remember relational databased store additional data in other tables. If we join
-                                // our employee on the Department table and Position table then we get that information to display
-
-                                // TODO: Bonus - Joining another table. Uncomment these lines for this bonus
-                                /*if (row["DepartmentName"] != DBNull.Value)
+                                if (row["DepartmentName"] != DBNull.Value)
                                 {
                                     employee.DepartmentName = row["DepartmentName"].ToString();
                                 }
@@ -245,13 +214,12 @@ namespace CodeLou.CSharp.Week5.Challenge
                                 if (row["PositionName"] != DBNull.Value)
                                 {
                                     employee.PositionName = row["PositionName"].ToString();
-                                }*/
-                                #endregion
+                                }
 
                                 // add the employee to the list of employees
                                 allEmployees.Add(employee);
                             }
-                            #endregion
+                
                         }
                     }
                 }
@@ -259,6 +227,83 @@ namespace CodeLou.CSharp.Week5.Challenge
 
             return allEmployees;
         }
-        
-    }
+
+        /// <summary>
+        /// Get the positions
+       
+        //public Employee GetPositions()
+        //{
+        //    // Create an employee to return to the view
+        //    Enum employee = new Employee();
+
+        //    // Connection to your SQL server, MySql, MsSql, Local MDF File
+        //    using (SqlConnection connection = new SqlConnection(_ConnectionString))
+        //    {
+        //        // The SQL command you want to run on your server to get data back
+        //        using (SqlCommand command = new SqlCommand("SELECT * from Position", connection))
+        //        {
+        //            // The adapter that is responsible for connecting to the database and getting the data
+        //            using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+        //            {
+        //                // This is the variable that will contain all of your data returned to you
+        //                DataTable dataTable = new DataTable();
+
+        //                // Fill the dataset
+        //                adapter.Fill(dataTable);
+
+        //                // First lets check to see if we have any data
+        //                if (dataTable != null)
+        //                {
+        //                    // loop through all the rows
+        //                    foreach (DataRow row in dataTable)
+        //                    {
+        //                        // new Employee
+        //                        // the column names are the same as our properties for ease of use
+        //                        // it's best to do this so you don't have to guess what property maps to what column
+
+        //                        // also be sure to match up the datatypes from SQL. You'll have to convert INT and Dates etc.
+        //                        Employee employee = new Employee();
+        //                        employee.ActiveEmployee = Convert.ToBoolean(row["ActiveEmployee"]);
+        //                        employee.DepartmentId = Convert.ToInt32(row["DepartmentId"]);
+        //                        employee.EMail = row["EMail"].ToString();
+        //                        employee.Extension = row["Extension"].ToString();
+        //                        employee.FirstName = row["FirstName"].ToString();
+        //                        employee.LastName = row["LastName"].ToString();
+        //                        employee.HireDate = Convert.ToDateTime(row["HireDate"]);
+        //                        employee.Id = Convert.ToInt32(row["Id"]);
+        //                        employee.Phone = row["Phone"].ToString();
+        //                        employee.PositionId = Convert.ToInt32(row["PositionId"]);
+        //                        employee.StartTime = row["StartTime"].ToString();
+        //                        employee.DepartmentName = row["DepartmentName"].ToString();
+        //                        employee.PositionName = row["PositionName"].ToString();
+
+        //                        // be sure to check for null values as well
+        //                        if (row["TerminationDate"] != DBNull.Value)
+        //                        {
+        //                            employee.TerminationDate = Convert.ToDateTime(row["TerminationDate"]);
+        //                        }
+
+        //                        if (row["DepartmentName"] != DBNull.Value)
+        //                        {
+        //                            employee.DepartmentName = row["DepartmentName"].ToString();
+        //                        }
+
+        //                        if (row["PositionName"] != DBNull.Value)
+        //                        {
+        //                            employee.PositionName = row["PositionName"].ToString();
+        //                        }
+
+        //                        // add the employee to the list of employees
+        //                        allEmployees.Add(employee);
+        //                    }
+
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return allEmployees;
+        //}
+
+        }
 }

@@ -1,0 +1,13 @@
+﻿@model CodeLou.CSharp.Week5.Challenge.Models.Employee
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("~/Views/Shared/_DetailsView.cshtml");
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

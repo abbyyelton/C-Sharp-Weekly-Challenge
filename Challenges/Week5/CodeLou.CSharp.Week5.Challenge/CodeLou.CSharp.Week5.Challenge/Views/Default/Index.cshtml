@@ -14,15 +14,14 @@
         <th>
             @Html.DisplayNameFor(model => model.FirstName) 
             @if (ViewBag.EnableSorting)
-            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "FirstName", OrderDirection = ViewBag.OrderDirection }) }
+            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "E.FirstName", OrderDirection = ViewBag.OrderDirection }) }
         </th>
         <th>
             @Html.DisplayNameFor(model => model.LastName) 
             @if (ViewBag.EnableSorting)
-            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "LastName", OrderDirection = ViewBag.OrderDirection }) }
+            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "E.LastName", OrderDirection = ViewBag.OrderDirection }) }
         </th>        
-        @* TODO: Bonus - Join another table. Uncomment these lines for this bonus*@
-        @*<th>
+        <th>
             @Html.DisplayNameFor(model => model.PositionName)
             @if (ViewBag.EnableSorting)
             { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "P.PositionName", OrderDirection = ViewBag.OrderDirection }) }
@@ -31,31 +30,31 @@
             @Html.DisplayNameFor(model => model.DepartmentName)
             @if (ViewBag.EnableSorting)
             { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "D.DepartmentName", OrderDirection = ViewBag.OrderDirection }) }
-        </th>*@        
+        </th>       
         <th>
             @Html.DisplayNameFor(model => model.EMail) 
             @if (ViewBag.EnableSorting)
-            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "EMail", OrderDirection = ViewBag.OrderDirection }) }
+            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "E.EMail", OrderDirection = ViewBag.OrderDirection }) }
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Phone) 
             @if (ViewBag.EnableSorting)
-            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "Phone", OrderDirection = ViewBag.OrderDirection }) }
+            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "E.Phone", OrderDirection = ViewBag.OrderDirection }) }
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Extension) 
             @if (ViewBag.EnableSorting)
-            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "Extension", OrderDirection = ViewBag.OrderDirection }) }
+            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "E.Extension", OrderDirection = ViewBag.OrderDirection }) }
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StartTime) 
             @if (ViewBag.EnableSorting)
-            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "StartTime", OrderDirection = ViewBag.OrderDirection }) }
+            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "E.StartTime", OrderDirection = ViewBag.OrderDirection }) }
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ActiveEmployee) 
             @if (ViewBag.EnableSorting)
-            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "ActiveEmployee", OrderDirection = ViewBag.OrderDirection }) }
+            { <br />@Html.ActionLink("sort", "Index", new { OrderBy = "E.ActiveEmployee", OrderDirection = ViewBag.OrderDirection }) }
         </th>
         <th></th>
     </tr>
@@ -68,13 +67,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.LastName)
         </td>
-        @*Bonus - Join another table. Uncomment these lines for this bonus*@
-        @*<td>
+        <td>
             @Html.DisplayFor(modelItem => item.PositionName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DepartmentName)
-        </td>*@       
+        </td>      
         <td>
             @Html.DisplayFor(modelItem => item.EMail)
         </td>

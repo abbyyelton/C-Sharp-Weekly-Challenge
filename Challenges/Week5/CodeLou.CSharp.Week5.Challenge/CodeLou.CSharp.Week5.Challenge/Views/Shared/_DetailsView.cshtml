@@ -1,0 +1,62 @@
+﻿@model CodeLou.CSharp.Week5.Challenge.Models.Employee
+
+<h2>@ViewBag.EmployeeFullName</h2>
+<h4>@(Model.DepartmentName)</h4>
+<h5>@(Model.PositionName)</h5>
+
+@Html.AntiForgeryToken()
+
+<hr />
+
+<div class="row">
+    <div>
+        @Html.LabelFor(model => model.EMail, htmlAttributes: new { @class = "control-label col-md-2" })
+    </div>
+    <div class="col-md-10">
+        @(Model.EMail)
+    </div>
+</div>
+
+<div class="row">
+    <div>
+        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+    </div>
+    <div class="col-md-10">
+        @(Model.Phone) x@(Model.Extension)
+    </div>
+</div>
+
+<div class="row">
+    <div>
+        @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+    </div>
+    <div class="col-md-10">
+        @(Model.StartTime)
+    </div>
+</div>
+
+<div class="row">
+    <div>
+        @Html.LabelFor(model => model.HireDate, htmlAttributes: new { @class = "control-label col-md-2" })
+    </div>
+    <div class="col-md-10">
+        @(Model.HireDate)
+    </div>
+</div>
+
+@if (!Model.ActiveEmployee)
+{
+    <div class="row">
+        <div>
+            @Html.LabelFor(model => model.TerminationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        </div>
+        <div class="col-md-10">
+            @(Model.TerminationDate)
+        </div>
+    </div>
+}
+
+<hr />
+
+
+

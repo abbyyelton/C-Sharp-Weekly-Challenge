@@ -73,16 +73,13 @@ namespace CodeLou.CSharp.Week5.Challenge.Models
         [Display(Name = "Active Employee")]
         public bool ActiveEmployee { get; set; }
 
-        #region Bonus - Joining another table
-        // TODO: Bonus - Joining another table. Uncomment these lines for this bonus
-        //[Display(Name = "Department")]
-        //[ScaffoldColumn(false)]
-        //public string DepartmentName { get; set; }
+        [Required]
+        [Display(Name = "Department")]
+        public string DepartmentName { get; set; }
 
-        //[Display(Name = "Position")]
-        //[ScaffoldColumn(false)]
-        //public string PositionName { get; set; }
-        #endregion
+        [Required]
+        [Display(Name = "Position")]
+        public string PositionName { get; set; }
     }
     public class Floor
     {

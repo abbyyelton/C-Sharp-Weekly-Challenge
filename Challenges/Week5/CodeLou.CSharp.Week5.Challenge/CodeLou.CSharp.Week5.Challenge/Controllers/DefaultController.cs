@@ -31,23 +31,15 @@ namespace CodeLou.CSharp.Week5.Challenge.Controllers
 
             // Create a list of employees to return to the view based on our SQL statement
 
-            // Basic select statement, however we do not get all the information we need.
-            string sql = "SELECT * FROM Employee";
+            string sql = "SELECT E.*, D.DepartmentName, P.PositionName FROM Employee E ";
+            sql += "INNER JOIN Department D ON D.Id = E.DepartmentId INNER JOIN Position P ON P.Id = E.PositionId";
 
-            #region Bonus - Joining another table
-            // TODO: Bonus - Joining another table
-            // remember relational databased store additional data in other tables. If we join
-            // our employee on the Department table and Position table then we get that information to display            
-            //string sql = "SELECT * FROM Employee E INNER JOIN Department D ON D.Id = E.DepartmentId INNER JOIN Position P ON P.Id = E.PositionId";
-            #endregion
-
-            // TODO: How to we order the data by a column, enable sorting?
-            ViewBag.EnableSorting = false;
+            ViewBag.EnableSorting = true;
             if (!String.IsNullOrEmpty(OrderBy))
             {
-                // sql += ??
-                // TODO: Bonus - How do we persist the OrderDirection?
-            }
+                sql += " ORDER BY " + OrderBy + " " + OrderDirection;
+                ViewBag.OrderDirection = OrderDirection == "ASC" ? "DESC" : "ASC";
+;            }
 
             List<Employee> allEmployees = repository.GetEmployees(sql);
             return View(allEmployees);
@@ -55,20 +47,47 @@ namespace CodeLou.CSharp.Week5.Challenge.Controllers
         // GET: Detail
         public ActionResult Details(int id)
         {
-            // TODO: Create View For Details and return employee model to view
-            return View();
+            return View(FindOneEmployee(id));
         }
+
         // GET: Edit
         public ActionResult Edit(int id)
         {
+            Employee employee = FindOneEmployee(id);
+           
+            //    Enum departments = GetDepartments();
+
+            ViewBag.Positions = GetPositions();
+            return View(employee);
+        }
+
+        private Position[] GetPositions()
+        {
+            //SqlRepository repository = new SqlRepository(_LocalFileConnectionString);
+            Position position = new Models.Position();
+            position.Id = 1;
+            position.PositionName = "Test";
+            Position position2 = new Models.Position();
+            position.Id = 2;
+            position.PositionName = "Run";
+            Position[] positions = { position, position2 };
+
+            return positions;
+        }
+
+        private Employee FindOneEmployee(int id)
+        {
             SqlRepository repository = new SqlRepository(_LocalFileConnectionString);
-            string sql = String.Format("SELECT * FROM Employee WHERE Id = {0}", id);        
+
+            string sql = "SELECT E.*, D.DepartmentName, P.PositionName FROM Employee E ";
+            sql += "INNER JOIN Department D ON D.Id = E.DepartmentId INNER JOIN Position P ON P.Id = E.PositionId ";
+            sql += $"WHERE E.Id = {id}";
 
             Employee employee = repository.GetOneEmployee(sql);
             ViewBag.EmployeeFullName = String.Format("{0} {1}", employee.FirstName, employee.LastName);
-
-            return View(employee);
+            return employee;
         }
+
         // POST: Edit
         [HttpPost]        
         public ActionResult Edit(Employee employee)
@@ -106,14 +125,7 @@ namespace CodeLou.CSharp.Week5.Challenge.Controllers
                 sql += $", TerminationDate = '{employee.TerminationDate.Value.ToString()}'";
             }
 
-            // really important step, to specifiy the employee id you want to update
-            // as of right now this command will update EVERYONE in the Employee table
-            // to these values
             sql += $" WHERE Id = {employee.Id}";
-
-            // Note: if you want to see what your string says all combined, set a breakpoint and debug your code.
-            // While in debug mode you can hover over a variable to see it's value. Or right click on it and
-            // select Quick Watch.
 
             repository.UpdateEmployee(sql);
             
@@ -122,15 +134,19 @@ namespace CodeLou.CSharp.Week5.Challenge.Controllers
         // GET: Delete
         public ActionResult Delete(int id)
         {
-            // TODO: Create View For Delete and return employee model to view
-            return View();
+            return View(FindOneEmployee(id));
         }
         // POST: Delete
         [HttpPost]
         public ActionResult Delete(Employee employee)
         {
-            // TODO: Delete employee from the database and redirect to list
-            return View();
+            SqlRepository repository = new SqlRepository(_LocalFileConnectionString);
+
+            string sql = String.Format($@"DELETE FROM Employee WHERE ID = {employee.Id}");
+
+            repository.DeleteEmployee(sql);
+
+            return RedirectToAction("Index");
         }
         // GET: Create
         public ActionResult Create()
@@ -143,9 +159,40 @@ namespace CodeLou.CSharp.Week5.Challenge.Controllers
         {
             // Hint: This method will be similar to the update method.
             // Hint: for now set the Position and Department to Id 1
-            
+
             // TODO: Create employee from form submission, redirect to list
-            return View();
+            SqlRepository repository = new SqlRepository(_LocalFileConnectionString);
+            
+
+
+            string sql = String.Format($@"INSERT INTO Employee (PositionId, DepartmentId, FirstName, LastName, Email, Phone, Extension, 
+HireDate, StartTime, ActiveEmployee) VALUES(
+                    1,
+                    1,
+                    '{employee.FirstName}',
+                    '{employee.LastName}',
+                    '{employee.EMail}',
+                    '{employee.Phone}',
+                    '{employee.Extension}',
+                    '{employee.HireDate.ToString()}',
+                    '{employee.StartTime}',
+            ");
+
+            if (employee.ActiveEmployee)
+            {
+                sql += "1";
+            }
+            else
+            {
+                sql += "0";
+            }
+
+            sql += ")";
+
+
+            repository.CreateEmployee(sql);
+
+            return RedirectToAction("Index");
         }        
     }    
 }

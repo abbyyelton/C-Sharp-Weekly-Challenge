@@ -1,0 +1,24 @@
+﻿@model CodeLou.CSharp.Week5.Challenge.Models.Employee
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+
+    Html.RenderPartial("~/Views/Shared/_DetailsView.cshtml");
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Delete" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
